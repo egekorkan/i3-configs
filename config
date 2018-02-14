@@ -1,0 +1,267 @@
+#Network Manager
+exec --no-startup-id sudo NetworkManager
+#default desktop
+exec --no-startup-id ~/git/i3-configs/justlaptop.sh
+
+#scaling of the i3 bars above the windows
+exec xrandr --dpi 180
+
+#wallpaper
+#exec --no-startup-id nitrogen --restore 
+
+#START UP APPLICATIONS
+exec --no-startup-id nm-applet
+exec --no-startup-id pasystray-gtk2
+exec --no-startup-id blueman-applet
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id i3-msg 'workspace 4:EMail; exec thunderbird'
+#exec --no-startup-id i3-msg 'workspace 3:Message; exec rambox'
+exec --no-startup-id i3-msg 'workspace 6:Music; exec spotify'
+exec --no-startup-id lrz-syncshare
+exec --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
+exec --no-startup-id sudo xinput --map-to-output 9 eDP-1
+exec dropbox
+
+set $ws1 "1:Internet"
+set $ws2 "2:Code"
+set $ws3 "3:Message"
+set $ws4 "4:EMail"
+set $ws5 "5:Files"
+set $ws6 "6:Music"
+set $mod Mod1
+#suspend bug fix hopefully
+bindsym $mod+z exec xrandr --auto
+
+##initial settings
+exec --no-startup-id pactl -- set-sink-volume 0 5%
+
+#PROGRAM BINDS
+bindsym $mod+c exec firefox
+bindsym $mod+e exec nemo 
+bindsym $mod+g exec gsimplecal 
+bindsym $mod+Ctrl+c exec gnome-calculator
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:monospace 8
+
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+#font pango:DejaVu Sans Mono 8
+
+# Before i3 v4.8, we used to recommend this one as the default:
+# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# The font above is very space-efficient, that is, it looks good, sharp and
+# clear in small sizes. However, its unicode glyph coverage is limited, the old
+# X core fonts rendering does not support right-to-left and this being a bitmap
+# font, it doesn’t scale on retina/hidpi displays.
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec xfce4-terminal -e fish
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+#taking screenshot of a selection and copying it to clipboard 
+bindsym Print exec maim -so | xclip -selection clipboard -t image/png
+
+#change keyboard configurations: 1 is normal, 2 is when you need accents
+bindsym $mod+Ctrl+1 exec setxkbmap -model pc105 -layout us
+bindsym $mod+Ctrl+2 exec setxkbmap -model pc105 -layout us -variant intl
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec dmenu_run
+
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+t layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+#bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+
+#workspaces on different monitors
+bindsym $mod+Ctrl+Left move workspace to output left
+bindsym $mod+Ctrl+Right move workspace to output right
+
+#MONITORS
+workspace $ws1 output eDP1
+workspace $ws2 output eDP1
+workspace $ws3 output eDP1
+workspace $ws4 output eDP1
+workspace $ws5 output eDP1
+workspace $ws6 output eDP1
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+#lock screen: change the 00 00 00 according to R G B colors to change the color
+bindsym $mod+p exec i3lock -c 000000 -n
+
+#set display mode
+set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2]"
+bindsym $mod+x mode $displayMode
+mode $displayMode {
+    bindsym l exec "\
+        ~/git/i3-configs/justlaptop.sh && \
+        mode "default"
+    
+    bindsym 1 exec "\
+        ~/git/i3-configs/work-justDP1-2.sh && \
+        mode "default"
+
+    bindsym 2 exec "\
+        ~/git/i3-configs/work-displays.sh && \
+        mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+#POWER
+set $mode_system System (l) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id lock && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym p exec --no-startup-id systemctl poweroff, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+o mode "$mode_system"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+
+#client.focused #D4D5D6 #D4D5D6 #6F7782
+#client.unfocused #bac4cc #F0F1F2 #AAB6C7
+#client.focused_inactive #51c4d4 #ecedee #818996
+#client.urgent #51c4d4 #ecedee #818996
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        
+        status_command i3status
+        tray_output primary
+        
+
+	#strip_workspace_numbers yes
+#colors {
+#        background #DEDFE3
+#        statusline #767E8A
+#        separator #51c4d4
+#
+#        focused_workspace  #777F8B #777F8B #ecedee
+#        active_workspace   #777F8B #777F8B #ecedee
+#        inactive_workspace #DEDFE3 #DEDFE3 #767E8A
+#        urgent_workspace   #DEDFE3 #DEDFE3 #767E8A
+#}
+}
+# Pulse Audio controls
+bindsym $mod+n exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+bindsym $mod+b exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+bindsym $mod+m exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+bindsym $mod+space exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+#in case the keyboard has play pause skip and previous buttons
+bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+
+bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+
+bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
