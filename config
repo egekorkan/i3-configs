@@ -19,8 +19,8 @@ exec --no-startup-id i3-msg 'workspace 4:EMail; exec thunderbird'
 exec --no-startup-id i3-msg 'workspace 6:Music; exec spotify'
 exec --no-startup-id lrz-syncshare
 exec --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
-exec --no-startup-id sudo xinput --map-to-output 9 eDP-1
-exec dropbox
+exec_always --no-startup-id sudo xinput --map-to-output 9 eDP-1
+exec --no-startup-id dropbox
 
 set $ws1 "1:Internet"
 set $ws2 "2:Code"
@@ -29,6 +29,7 @@ set $ws4 "4:EMail"
 set $ws5 "5:Files"
 set $ws6 "6:Music"
 set $mod Mod1
+
 #suspend bug fix hopefully
 bindsym $mod+z exec xrandr --auto
 
@@ -168,16 +169,17 @@ set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScree
 bindsym $mod+x mode $displayMode
 mode $displayMode {
     bindsym l exec "\
-        ~/git/i3-configs/justlaptop.sh && \
+        ~/git/i3-configs/justlaptop.sh"; \
         mode "default"
     
     bindsym 1 exec "\
-        ~/git/i3-configs/work-justDP1-2.sh && \
+        ~/git/i3-configs/work-justDP1-2.sh"; \
         mode "default"
 
     bindsym 2 exec "\
-        ~/git/i3-configs/work-displays.sh && \
+        ~/git/i3-configs/work-displays.sh"; \
         mode "default"
+
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -237,7 +239,7 @@ bar {
         tray_output primary
         
 
-	#strip_workspace_numbers yes
+    #strip_workspace_numbers yes
 #colors {
 #        background #DEDFE3
 #        statusline #767E8A
