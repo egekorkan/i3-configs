@@ -64,7 +64,7 @@ battery 0 {
 volume master {
     format = "%volume ♬"
     format_muted = "- ♬"
-    device = "pulse"
+    device = "default"
     mixer = "Master"
     mixer_idx = 0
 }
@@ -81,13 +81,13 @@ cpu_usage {
 
 cpu_temperature 0 {
 	format = "CPU1 %degrees°"
-	path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
+	path = "/sys/devices/platform/coretemp.0/hwmon/hwmon*/temp1_input"
 	max_threshold = 95
 }
 
 cpu_temperature 1 {
         format = "CPU2 %degrees°"
-        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp2_input"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon*/temp2_input"
         max_threshold = 95
 }
 
