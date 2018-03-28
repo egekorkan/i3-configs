@@ -1,0 +1,3 @@
+#!/bin/bash
+
+temp1=$(/sys/devices/platform/coretemp.0/hwmon*/hwmon3/temp1_input)

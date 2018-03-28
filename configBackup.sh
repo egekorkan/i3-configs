@@ -22,7 +22,6 @@ exec --no-startup-id i3-msg 'workspace 6:EMail; exec thunderbird'
 exec --no-startup-id i3-msg 'workspace 7:Music; exec spotify'
 exec --no-startup-id lrz-syncshare
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
-exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.5
 exec_always --no-startup-id sudo xinput --map-to-output 9 eDP-1
 exec --no-startup-id dropbox
 
@@ -41,6 +40,7 @@ set $ws7 "7:Music"
 set $ws8 "8:Other1"
 set $ws9 "9:Other2"
 set $ws10 "10:Other3"
+
 
 #MONITORS
 workspace $ws1 output eDP1
@@ -64,20 +64,7 @@ font pango:DejaVu Sans Mono 8
 
 #### STARTUP FINISHED ####
 
-##########################################
-# i3 IMPORTANT KEYS
-##########################################
-
-set $mod Mod1
-# reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-#### i3 IMPORTANT KEYS FINISHED ####
-####################################
+set $mod Mod1 # Setting the mod button to ALTe
 
 ##########################################
 # WORKSPACE MANAGEMENT
@@ -110,25 +97,35 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 bindsym $mod+Ctrl+Left move workspace to output left
 bindsym $mod+Ctrl+Right move workspace to output right
 
-#### WORKSPACE MANAGEMENT FINISHED ####
-#######################################
 
-##########################################
-# WINDOW MANAGEMENT
-##########################################
+#suspend bug fix hopefully
+bindsym $mod+z exec xrandr --auto
+
+
+#PROGRAM BINDS
+bindsym $mod+c exec firefox
+bindsym $mod+e exec nemo 
+bindsym $mod+g exec gsimplecal 
+bindsym $mod+Ctrl+c exec gnome-calculator
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec xfce4-terminal -e fish
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
-#lock screen: change the 00 00 00 according to R G B colors to change the color
-bindsym $mod+p exec i3lock -c 000000 -n
+#taking screenshot of a selection and copying it to clipboard 
+bindsym Print exec maim -so | xclip -selection clipboard -t image/png
 
-#change keyboard configurations: 1 is normal, 2 is when you need accents for various languages
+#change keyboard configurations: 1 is normal, 2 is when you need accents
 bindsym $mod+Ctrl+1 exec setxkbmap -model pc105 -layout us
 bindsym $mod+Ctrl+2 exec setxkbmap -model pc105 -layout us -variant intl
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+# start dmenu (a program launcher)
+bindsym $mod+d exec dmenu_run
 
 # change focus
 bindsym $mod+j focus left
@@ -180,63 +177,15 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 5 px or 5 ppt
-        bindsym Down resize grow height 5 px or 5 ppt
-        bindsym Up resize shrink height 5 px or 5 ppt
-        bindsym Right resize grow width 5 px or 5 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-bindsym $mod+r mode "resize"
-
-#suspend bug fix hopefully
-bindsym $mod+z exec xrandr --auto
-
-#### WINDOW MANAGEMENT INISHED ####
-###################################
-
-##########################################
-# PROGRAM MANAGEMENT
-##########################################
-
-#PROGRAM BINDS
-bindsym $mod+c exec firefox # browser
-bindsym $mod+e exec nemo # file browser 
-bindsym $mod+g exec gsimplecal # floating calendar
-bindsym $mod+Ctrl+c exec gnome-calculator # floating calculator
-
-# start a terminal
-bindsym $mod+Return exec xfce4-terminal -e fish
-
-#taking screenshot of a selection and copying it to clipboard 
-bindsym Print exec maim -so | xclip -selection clipboard -t image/png
-
-# start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
-for_window [class="Yad"] floating enable
-
-#### PROGRAM MANAGEMENT FINISHED ####
-
-##########################################
-# MODE MANAGEMENT
-##########################################
+#lock screen: change the 00 00 00 according to R G B colors to change the color
+bindsym $mod+p exec i3lock -c 000000 -n
 
 #set display mode
 set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2]"
@@ -273,6 +222,32 @@ mode "$mode_system" {
 }
 bindsym $mod+o mode "$mode_system"
 
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
 ##########################################
 #AUDIO AND MEDIA PLAYER CONTROLS
 ##########################################
@@ -306,7 +281,6 @@ bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
-
 ##########################################
 # I3BAR CONTROLS
 ##########################################
@@ -314,7 +288,7 @@ bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 # finds out, if available)
 bar {
         
-        status_command i3blocks
+        status_command i3status
         tray_output primary
 
 }
