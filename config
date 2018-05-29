@@ -3,11 +3,17 @@
 ##########################################
 #Network Manager
 exec --no-startup-id sudo NetworkManager
+
+#Xbindkeys init
+exec --no-startup-id xbindkeys
+
+execshu --no-startup-id nemo-preview
+
 #default desktop
 exec --no-startup-id ~/git/i3-configs/justlaptop.sh
 
 #scaling of the i3 bars above the windows
-exec_always  --no-startup-id xrandr --dpi 160
+exec_always  --no-startup-id xrandr --dpi 210
 
 #wallpaper
 exec_always --no-startup-id feh -z --bg-fill  ~/Pictures/Wallpapers/*
@@ -19,10 +25,11 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id i3-msg 'workspace 6:EMail; exec thunderbird'
 #exec --no-startup-id i3-msg 'workspace 5:Message; exec rambox'
-exec --no-startup-id i3-msg 'workspace 7:Music; exec spotify'
+exec --no-startup-id i3-msg 'workspace 4:Files; exec npm start --prefix ~/Programs/trello-desktop/'
+exec --no-startup-id i3-msg 'workspace 7:Music; exec spotify --force-device-scale-factor=1.5'
 exec --no-startup-id lrz-syncshare
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
-exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.5
+exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.7
 exec_always --no-startup-id sudo xinput --map-to-output 9 eDP-1
 exec --no-startup-id dropbox
 
@@ -164,7 +171,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+#bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+t layout toggle split
 
@@ -220,13 +227,19 @@ bindsym $mod+z exec xrandr --auto
 bindsym $mod+c exec firefox # browser
 bindsym $mod+e exec nemo # file browser 
 bindsym $mod+g exec gsimplecal # floating calendar
-bindsym $mod+Ctrl+c exec gnome-calculator # floating calculator
+bindsym $mod+q exec gnome-calculator # floating calculator
+for_window [class="Gnome-calculator"] floating enable; 
+bindsym $mod+s exec subl3
+bindsym $mod+Shift+d exec npm start --prefix ~/Programs/drawio-desktop/
+bindsym $mod+Ctrl+Delete exec gnome-system-monitor
 
 # start a terminal
 bindsym $mod+Return exec xfce4-terminal -e fish
 
 #taking screenshot of a selection and copying it to clipboard 
 bindsym Print exec maim -so | xclip -selection clipboard -t image/png
+bindsym $mod+BackSpace exec maim -so screenshot.png
+#bindsym Print exec shutter -s -o screenshot.png
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
@@ -262,7 +275,7 @@ mode $displayMode {
 set $mode_system System (l) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id lock && systemctl suspend, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
     bindsym h exec --no-startup-id systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym p exec --no-startup-id systemctl poweroff, mode "default"
@@ -313,8 +326,13 @@ bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        
+        # output primary
         status_command i3blocks
         tray_output primary
-
 }
+
+# bar {
+#         output HDMI-1
+#         status_command i3blocks
+#         tray_output HDMI-1
+# }
