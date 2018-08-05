@@ -25,8 +25,8 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id i3-msg 'workspace 6:EMail; exec thunderbird'
 #exec --no-startup-id i3-msg 'workspace 5:Message; exec rambox'
-exec --no-startup-id i3-msg 'workspace 4:Files; exec npm start --prefix ~/Programs/trello-desktop/'
-exec --no-startup-id i3-msg 'workspace 7:Music; exec spotify --force-device-scale-factor=1.5'
+exec --no-startup-id i3-msg 'workspace 5:Trello; exec npm start --prefix ~/Programs/trello-desktop/'
+exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify --force-device-scale-factor=1.5'
 exec --no-startup-id lrz-syncshare
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.7
@@ -42,9 +42,9 @@ set $ws1 "1:Internet"
 set $ws2 "2:Code"
 set $ws3 "3:Code2"
 set $ws4 "4:Files"
-set $ws5 "5:Message"
+set $ws5 "5:Trello"
 set $ws6 "6:EMail"
-set $ws7 "7:Music"
+set $ws7 "7:Spotify"
 set $ws8 "8:Other1"
 set $ws9 "9:Other2"
 set $ws10 "10:Other3"
@@ -275,7 +275,7 @@ mode $displayMode {
 set $mode_system System (l) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym s exec --no-startup-id i3lock -c 000000 -n & systemctl suspend, mode "default"
     bindsym h exec --no-startup-id systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym p exec --no-startup-id systemctl poweroff, mode "default"
