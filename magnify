@@ -1,0 +1,34 @@
+#!/bin/bash
+
+kmag & #opens kmag with the window title KMag
+sleep 1 #waits 1 sec for the program to load
+#xprop -name "KMagnifier" -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0" #gets rid of the title and window decoration
+#xprop -f _NET_WM_WINDOW_TYPE 32a -name "kmag" -set _NET_WM_WINDOW_TYPE _NET_WM_WINDOW_TYPE_DOCK #converts kmag to a dock
+wmctrl -r "kmag" -e 0,0,695,1024,60 #moves kmag to the bottom of the screen
+#xprop -f _NET_WM_STRUT_PARTIAL 32c -name "kmag" -set _NET_WM_STRUT_PARTIAL " 0, 0, 0, 72, 0, 0, 0, 0, 0, 0, 0, 1024" #reserves space for kmag so that it beahves like a panel and maximied window can not cover it or go under it
+
+# mouseLoc=$(xdotool getmouselocation)
+# echo $mouseLoc
+# xPos=`expr index "$mouseLoc" x`
+# yPos=`expr index "$mouseLoc" y`
+# screenPos=`expr index "$mouseLoc" screen`
+# echo $xPos
+# echo $yPos
+# x=${mouseLoc:$xPos+1:$yPos-3}
+# y=${mouseLoc:$yPos+1:$screenPos-11}
+# #x=1280
+# #y=720
+# echo $x
+# echo $y 
+# #maim -g 100x100+$x+$y ~/git/i3-configs/screenshotTest.png
+# #maim -g 100x100+500+300 ./screenshotTest.png
+# feh -xN -V -g 500x500+$x+$y --zoom max ~/git/i3-configs/screenshotTest.png
+# #feh -xN -g 500x500+1000+1000 --zoom max ./screenshotTest.png
+# # feh -xN -g 100x100+100+100 screenshot1.png
+# # feh -xN -g 1000x1000+100+100 --zoom max screenshot1.png
+
+
+# # maim -g 500x500+10+10 screenshot1.png
+
+# # xdotool getmouselocation
+# # x:508 y:1320 screen:0 window:56626357

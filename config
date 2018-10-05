@@ -15,23 +15,35 @@ exec --no-startup-id ~/git/i3-configs/justlaptop.sh
 #scaling of the i3 bars above the windows
 exec_always  --no-startup-id xrandr --dpi 210
 
+# notification
+exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
+
 #wallpaper
 exec_always --no-startup-id feh -z --bg-fill  ~/Pictures/Wallpapers/*
 
 #START UP APPLICATIONS
 exec --no-startup-id nm-applet
 exec --no-startup-id pasystray
-exec --no-startup-id blueman-applet
+exec --no-startup-id sudo blueman-applet
 exec --no-startup-id xfce4-power-manager
-exec --no-startup-id i3-msg 'workspace 6:EMail; exec thunderbird'
-#exec --no-startup-id i3-msg 'workspace 5:Message; exec rambox'
-exec --no-startup-id i3-msg 'workspace 5:Trello; exec npm start --prefix ~/Programs/trello-desktop/'
+#exec --no-startup-id i3-msg 'workspace 6:EMail; exec thunderbird'
+exec --no-startup-id i3-msg 'workspace 6:EMail; exec ~/Programs/thunderbird/thunderbird'
+exec --no-startup-id i3-msg 'workspace 5:Rambox; exec rambox'
+#exec --no-startup-id i3-msg 'workspace 5:Trello; exec npm start --prefix ~/Programs/trello-desktop/'
 exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify --force-device-scale-factor=1.5'
 exec --no-startup-id lrz-syncshare
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.7
-exec_always --no-startup-id sudo xinput --map-to-output 9 eDP-1
+exec_always --no-startup-id 2
 exec --no-startup-id dropbox
+
+# node red for twitter automation
+exec --no-startup-id node-red
+
+# Autolock thingy
+#exec xautolock -time 10 -locker 'i3lock -c 000000 -n' &
+#exec_always xautolock -time 1 -notify 10 -notifier 'xbrightness -10000' -locker 'i3lock -c 000000 -n' &
+
 
 ##Startup Settings for Audio levels
 exec --no-startup-id pactl -- set-sink-volume 0 15%
@@ -42,7 +54,7 @@ set $ws1 "1:Internet"
 set $ws2 "2:Code"
 set $ws3 "3:Code2"
 set $ws4 "4:Files"
-set $ws5 "5:Trello"
+set $ws5 "5:Rambox"
 set $ws6 "6:EMail"
 set $ws7 "7:Spotify"
 set $ws8 "8:Other1"
@@ -75,7 +87,7 @@ font pango:DejaVu Sans Mono 8
 # i3 IMPORTANT KEYS
 ##########################################
 
-set $mod Mod1
+set $mod Mod4
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -129,6 +141,9 @@ bindsym $mod+Shift+q kill
 
 #lock screen: change the 00 00 00 according to R G B colors to change the color
 bindsym $mod+p exec i3lock -c 000000 -n
+
+exec xautolock -time 10 -locker 'i3lock -c 000000 -n' &
+#exec_always xautolock -time 1 -notify 10 -notifier 'xbrightness -10000' -locker 'i3lock -c 000000 -n' &
 
 #change keyboard configurations: 1 is normal, 2 is when you need accents for various languages
 bindsym $mod+Ctrl+1 exec setxkbmap -model pc105 -layout us
@@ -244,6 +259,16 @@ bindsym $mod+BackSpace exec maim -so screenshot.png
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
 for_window [class="Yad"] floating enable
+
+#bindsym $mod+Shift+w exec feh -xN screenshot.png
+#for_window [class="feh"] floating enable;
+
+#bindsym $mod+Shift+w exec xzoom -source 100x100+100+100 -mag 5
+#-geometry 300x300+500+300
+#for_window [class="xzoom"] floating enable
+
+bindsym $mod+Shift+w exec kmag
+for_window [class="kmag"] floating enable border pixel 0 resize set 400 400 #move absolute position 1600 920
 
 #### PROGRAM MANAGEMENT FINISHED ####
 
