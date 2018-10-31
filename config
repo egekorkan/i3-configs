@@ -30,7 +30,7 @@ exec --no-startup-id xfce4-power-manager
 exec --no-startup-id i3-msg 'workspace 6:EMail; exec ~/Programs/thunderbird/thunderbird'
 exec --no-startup-id i3-msg 'workspace 5:Rambox; exec rambox'
 #exec --no-startup-id i3-msg 'workspace 5:Trello; exec npm start --prefix ~/Programs/trello-desktop/'
-exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify --force-device-scale-factor=1.5'
+exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify'
 exec --no-startup-id lrz-syncshare
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.7
@@ -272,6 +272,19 @@ for_window [class="kmag"] floating enable border pixel 0 resize set 400 400 #mov
 
 #### PROGRAM MANAGEMENT FINISHED ####
 
+
+
+##########################################
+# SIGNATURE MANAGEMENT
+##########################################
+
+bindsym $mod+Ctrl+e exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature.html
+bindsym $mod+Ctrl+w exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature-Simple.html
+bindsym $mod+Ctrl+d exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature_DE.html
+bindsym $mod+Ctrl+s exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature_DE-Simple.html
+
+
+#### SIGNATURE MANAGEMENT FINISHED ####
 ##########################################
 # MODE MANAGEMENT
 ##########################################
