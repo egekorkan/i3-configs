@@ -45,7 +45,7 @@ height = 2%
 ; offset-x = 10%
 ; offset-y = 10%
 radius = 2.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -179,7 +179,7 @@ interval = 25
 
 mount-0 = /
 format-mounted =  <label-mounted>
-format-underline = #ced5e0
+format-mounted-underline = #f7f7f7
 ; label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
 label-mounted = %free%
 label-unmounted = %mountpoint% not mounted
@@ -190,11 +190,13 @@ label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/cpu]
 type = internal/cpu
-interval = 2
-format-prefix = 
+interval = 1
+; format-prefix = 
+format-prefix = %{A:gnome-system-monitor&:} %{A}
 format-prefix-foreground = #ffffff
 format-underline = #f90000
 label = %percentage:2%%
+click-left = gnome-system-monitor
 
 ; uses brightnessctl package
 [module/custombacklight]
@@ -206,7 +208,7 @@ click-middle = sudo brightnessctl s 100
 internal = 5
 scroll-up = sudo brightnessctl s +10%
 scroll-down = sudo brightnessctl s 10%-
-format-underline = #ffffff
+format-underline = #f4f142
 
 ;uses spotifynow package
 [module/customspotify]
@@ -394,6 +396,8 @@ menu-0-1 = Multimedia
 menu-0-1-exec = menu-open-2
 menu-0-2 = Code
 menu-0-2-exec = menu-open-3
+menu-0-3 = Office
+menu-0-3-exec = menu-open-4
 
 menu-1-0 = 
 menu-1-0-exec = google-chrome-stable &
@@ -401,6 +405,8 @@ menu-1-1 = Postman
 menu-1-1-exec = postman &
 menu-1-2 = Thunderbird
 menu-1-2-exec = ~/Programs/thunderbird/thunderbird &
+menu-1-0 = 
+menu-1-0-exec = firefox &
 
 menu-2-0 = Draw.io
 menu-2-0-exec = draw.io &
@@ -408,8 +414,9 @@ menu-2-1 = Ink
 menu-2-1-exec = inkscape &
 menu-2-2 = Volume Control
 menu-2-2-exec = pavucontrol &
-menu-2-3 = Libre Office
-menu-2-3-exec = libreoffice &
+menu-2-3 = Notetaking
+menu-2-3-exec = xournal &
+
 
 menu-3-0 = Visual Studio
 menu-3-0-exec = code &
@@ -418,6 +425,10 @@ menu-3-1-exec = subl3 &
 menu-3-2 = Eclipse
 menu-3-2-exec = eclipse &
 
+menu-4-0 = Libre Office
+menu-4-0-exec = libreoffice &
+menu-4-1 = Files
+menu-4-1-exec = nemo &
 
 label-open = 
 label-close = 
