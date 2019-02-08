@@ -1,8 +1,9 @@
+#/bin/bash
 ##########################################
 # STARTUP CONTROL
 ##########################################
 #Network Manager
-exec --no-startup-id sudo NetworkManager
+exec --no-startup-id "sleep 10; sudo NetworkManager"
 
 #Xbindkeys init
 exec --no-startup-id xbindkeys
@@ -13,7 +14,8 @@ execshu --no-startup-id nemo-preview
 exec --no-startup-id ~/git/i3-configs/justlaptop.sh
 
 #scaling of the i3 bars above the windows
-exec_always  --no-startup-id xrandr --dpi 210
+exec_always  --no-startup-id xrandr --dpi 120
+
 
 # notification
 exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
@@ -79,7 +81,7 @@ workspace $ws10 output eDP1
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 8
+font pango:DejaVu Sans Mono 12
 
 #### STARTUP FINISHED ####
 
@@ -128,6 +130,8 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 #workspaces on different monitors
 bindsym $mod+Ctrl+Left move workspace to output left
 bindsym $mod+Ctrl+Right move workspace to output right
+bindsym $mod+Ctrl+Up move workspace to output up
+bindsym $mod+Ctrl+Down move workspace to output down
 
 #### WORKSPACE MANAGEMENT FINISHED ####
 #######################################
@@ -140,10 +144,9 @@ bindsym $mod+Ctrl+Right move workspace to output right
 bindsym $mod+Shift+q kill
 
 #lock screen: change the 00 00 00 according to R G B colors to change the color
-bindsym $mod+p exec i3lock -c 000000 -n
+bindsym $mod+p exec xlock -mode blank
 
-exec xautolock -time 10 -locker 'i3lock -c 000000 -n' &
-#exec_always xautolock -time 1 -notify 10 -notifier 'xbrightness -10000' -locker 'i3lock -c 000000 -n' &
+exec xautolock -time 30 -locker 'xlock -mode blank' &
 
 #change keyboard configurations: 1 is normal, 2 is when you need accents for various languages
 bindsym $mod+Ctrl+1 exec setxkbmap -model pc105 -layout us
@@ -152,11 +155,6 @@ bindsym $mod+Ctrl+2 exec setxkbmap -model pc105 -layout us -variant intl
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -164,11 +162,7 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -245,11 +239,13 @@ bindsym $mod+g exec gsimplecal # floating calendar
 bindsym $mod+q exec gnome-calculator # floating calculator
 for_window [class="Gnome-calculator"] floating enable; 
 bindsym $mod+s exec subl3
+bindsym $mod+l exec libreoffice
 bindsym $mod+Shift+d exec npm start --prefix ~/Programs/drawio-desktop/
 bindsym $mod+Ctrl+Delete exec gnome-system-monitor
 
 # start a terminal
 bindsym $mod+Return exec xfce4-terminal -e fish
+bindsym $mod+Shift+Return exec xfce4-terminal -e ranger
 
 #taking screenshot of a selection and copying it to clipboard 
 bindsym Print exec maim -so | xclip -selection clipboard -t image/png
@@ -267,7 +263,7 @@ for_window [class="Yad"] floating enable
 #-geometry 300x300+500+300
 #for_window [class="xzoom"] floating enable
 
-bindsym $mod+Shift+w exec kmag
+#bindsym $mod+Shift+w exec kmag
 for_window [class="kmag"] floating enable border pixel 0 resize set 400 400 #move absolute position 1600 920
 
 #### PROGRAM MANAGEMENT FINISHED ####
@@ -278,13 +274,15 @@ for_window [class="kmag"] floating enable border pixel 0 resize set 400 400 #mov
 # SIGNATURE MANAGEMENT
 ##########################################
 
-bindsym $mod+Ctrl+e exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature.html
-bindsym $mod+Ctrl+w exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature-Simple.html
-bindsym $mod+Ctrl+d exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature_DE.html
-bindsym $mod+Ctrl+s exec xclip -t text/html ./LRZ\ Sync+Share/Work/EmailSignature_DE-Simple.html
+bindsym $mod+Ctrl+e exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature.html
+bindsym $mod+Ctrl+w exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature-Simple.html
+bindsym $mod+Ctrl+d exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature_DE.html
+bindsym $mod+Ctrl+s exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature_DE-Simple.html
 
 
 #### SIGNATURE MANAGEMENT FINISHED ####
+
+
 ##########################################
 # MODE MANAGEMENT
 ##########################################
@@ -308,6 +306,9 @@ mode $displayMode {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
+bindsym $mod+Shift+P exec xinput --map-to-output 'Wacom Pen and multitouch sensor Finger touch' eDP-1 && xinput --map-to-output 'Wacom Pen and multitouch sensor Pen stylus' eDP-1 && xinput --map-to-output 'Wacom Pen and multitouch sensor Pen eraser' eDP-1
+
 
 #POWER
 set $mode_system System (l) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
@@ -357,17 +358,20 @@ bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
-
+exec_always --no-startup-id ~/git/i3-configs/launch.sh
 ##########################################
 # I3BAR CONTROLS
 ##########################################
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        # output primary
-        status_command i3blocks
-        tray_output primary
-}
+# bar {
+#         # output primary
+#         status_command i3blocks
+#         tray_output primary
+#
+# bar {
+#     status_command polybar example
+# }
 
 # bar {
 #         output HDMI-1
