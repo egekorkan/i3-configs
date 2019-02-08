@@ -8,7 +8,7 @@ percentagePos=`expr index "$lightInfo" %`
 
 
 if [[ $lightInfo == *"100%"* ]]; then
-  echo ${lightInfo:$percentagePos-4:4}
+  echo  ${lightInfo:$percentagePos-4:4}
 else
-  echo ${lightInfo:$percentagePos-3:3}
+  echo  ${lightInfo:$percentagePos-3:3}
 fi

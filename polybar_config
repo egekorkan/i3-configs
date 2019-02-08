@@ -27,11 +27,19 @@ primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
 
-[bar/example]
+[bar/laptop]
+inherit = bar/bigscreen
+monitor = eDP-1
+bottom = true
+modules-left = powermenu i3
+
+; modules-left = bspwm i3
+
+[bar/bigscreen]
 ;monitor = ${env:MONITOR:HDMI-1}
 bottom = true
 monitor = DP-1-2
-monitor-fallback =eDP-1
+; monitor-fallback =eDP-1
 width = 100%
 height = 2%
 ; offset-x = 10%
@@ -42,7 +50,7 @@ fixed-center = false
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 5
+line-size = 2
 line-color = #f00
 
 border-size = 2
@@ -57,14 +65,16 @@ module-margin-right = 2
 font-0 = fixed:pixelsize=12;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=12;1
-font-5 = FontAwesome:size=24;1
+font-3 = Font Awesome 5 Free:pixelsize=14;3
+font-4 = Font Awesome 5 Free Solid:pixelsize=14;3
+font-5 = Font Awesome 5 Brands:pixelsize=14;3
 
-modules-left = bspwm i3
-modules-center = 
-modules-right = customspotify filesystem custombacklight pulseaudio customkeyboard memory cpu wlan eth updates-arch-aur battery temperature popup-calendar powermenu
+modules-left = i3 appmenu
+modules-center = customspotify pulseaudio
+modules-right =  filesystem custombacklight customkeyboard memory cpu wlan eth updates-arch-aur battery temperature popup-calendar
 
 tray-position = right
-tray-padding = 2
+tray-padding = 3
 tray-detached = false
 ;tray-background = #0063ff
 
@@ -82,45 +92,8 @@ tray-detached = false
 cursor-click = pointer
 cursor-scroll = ns-resize
 
-[module/xwindow]
-type = internal/xwindow
-label = %title:0:30:...%
-
-[module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
-internal = 1
-
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-prefix-underline = ${colors.secondary}
-
-label-layout = %layout%
-label-layout-underline = ${colors.secondary}
-
-label-indicator-padding = 2
-label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
-
-[module/updates-arch-aur]
-type = custom/script
-exec = ~/git/polybar-scripts/polybar-scripts/updates-arch-combined/updates-arch-combined.sh
-interval = 600
-format-underline = #1793d1
-
-[module/filesystem]
-type = internal/fs
-interval = 25
-
-mount-0 = /
-
-; label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
-label-mounted = %free%
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
-
 [module/bspwm]
+ ; DO NOT DELETE IF I3 IS USING ITS VARIABLES!!
 type = internal/bspwm
 
 label-focused = %index%
@@ -139,14 +112,12 @@ label-empty = %index%
 label-empty-foreground = ${colors.foreground-alt}
 label-empty-padding = 2
 
-; Separator in between workspaces
-; label-separator = |
-
 [module/i3]
 type = internal/i3
 format = <label-state> <label-mode>
 index-sort = true
-wrapping-scroll = false
+wrapping-scroll = true
+strip-wsnumbers = true
 
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
@@ -156,25 +127,62 @@ label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-label-focused = %index%
+label-focused = %index% %name% %icon%
 label-focused-background = ${module/bspwm.label-focused-background}
 label-focused-underline = ${module/bspwm.label-focused-underline}
 label-focused-padding = ${module/bspwm.label-focused-padding}
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
+label-unfocused = %index% %icon%
 label-unfocused-padding = ${module/bspwm.label-occupied-padding}
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %index%
+label-visible = %index% %icon%
 label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %index%
+label-urgent = %index% %name% %icon%
 label-urgent-background = ${module/bspwm.label-urgent-background}
 label-urgent-padding = ${module/bspwm.label-urgent-padding}
+
+ws-icon-0 = 1:Internet;
+ws-icon-1 = 2:Code;
+ws-icon-2 = 3:Code2;
+ws-icon-3 = 4:Files;
+ws-icon-4 = 5:Rambox;
+ws-icon-5 = 6:EMail;
+ws-icon-6 = 7:Spotify;
+ws-icon-7 = 8:Other1;
+ws-icon-8 = 9:Other2;
+ws-icon-9 = 10:Other3;
+
+; Separator in between workspaces
+; label-separator = |
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+[module/updates-arch-aur]
+type = custom/script
+exec = ~/git/polybar-scripts/polybar-scripts/updates-arch-combined/updates-arch-combined.sh
+interval = 600
+format-underline = #1793d1
+; label = 
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+format-mounted =  <label-mounted>
+format-underline = #ced5e0
+; label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-mounted = %free%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
 
 ; Separator in between workspaces
 ; label-separator = |
@@ -182,11 +190,12 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix = 
+format-prefix-foreground = #ffffff
 format-underline = #f90000
 label = %percentage:2%%
 
+; uses brightnessctl package
 [module/custombacklight]
 type = custom/script
 exec = ~/git/i3-configs/brightness.sh
@@ -198,6 +207,7 @@ scroll-up = sudo brightnessctl s +10%
 scroll-down = sudo brightnessctl s 10%-
 format-underline = #ffffff
 
+;uses spotifynow package
 [module/customspotify]
 type = custom/script
 exec = ~/git/i3-configs/spotifyInfo.sh
@@ -211,12 +221,13 @@ type = custom/script
 exec = ~/git/i3blocks-contrib/key_layout/key_layout
 label-layout-underline = ${colors.secondary}
 interval = 5
+format-underline = #ced5e0
 
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix = 
+format-prefix-foreground = #ffffff
 format-underline = #4bffdc
 label = %percentage_used%%
 
@@ -225,22 +236,15 @@ type = internal/network
 interface = wlp4s0
 interval = 3.0
 
-format-connected = <ramp-signal> <label-connected>
+format-connected =  <label-connected>
 format-connected-underline = #9f78e1
 label-connected = %essid%
 
-;format-disconnected = 
+; format-disconnected = 
 format-disconnected = <label-disconnected>
 format-disconnected-underline = ${self.format-connected-underline}
-label-disconnected = x
-label-disconnected-foreground = ${colors.foreground-alt}
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.foreground-alt}
+label-disconnected = 
+label-disconnected-foreground = #9f78e1
 
 [module/eth]
 type = internal/network
@@ -250,36 +254,20 @@ interval = 3.0
 format-connected-underline = #55aa55
 format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
+label-connected =  %local_ip%
 
-format-disconnected =
-;format-disconnected = <label-disconnected>
+; format-disconnected = 
+format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
-
-[module/date]
-type = internal/date
-interval = 5
-
-date =
-date-alt = " %Y-%m-%d"
-
-time = %H:%M
-time-alt = %H:%M:%S
-
-format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #0a6cf5
-
-label = %date% %time%
 
 [module/popup-calendar]
 type = custom/script
 exec = ~/git/polybar-scripts/polybar-scripts/popup-calendar/popup-calendar.sh
 interval = 5
 click-left = ~/git/polybar-scripts/polybar-scripts/popup-calendar/popup-calendar.sh --popup
-; label =  
+format-underline = #b3cbef
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -288,36 +276,8 @@ format-volume = <label-volume> <bar-volume>
 label-volume = VOL %percentage%%
 label-volume-foreground = ${root.foreground}
 
-label-muted = 🔇 muted
+label-muted = 
 label-muted-foreground = #666
-
-bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
-bar-volume-indicator = |
-bar-volume-indicator-font = 2
-bar-volume-fill = ─
-bar-volume-fill-font = 2
-bar-volume-empty = ─
-bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground-alt}
-
-[module/alsa]
-type = internal/alsa
-
-format-volume = <label-volume> <bar-volume>
-label-volume = VOL
-label-volume-foreground = ${root.foreground}
-
-format-muted-prefix = " "
-format-muted-foreground = ${colors.foreground-alt}
-label-muted = sound muted
 
 bar-volume-width = 10
 bar-volume-foreground-0 = #55aa55
@@ -348,13 +308,15 @@ format-charging-underline = #ffb52a
 format-discharging = <animation-discharging> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
-format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-prefix = 
+format-full-prefix-foreground = #ffffff
 format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
 ramp-capacity-foreground = ${colors.foreground-alt}
 
 animation-charging-0 = 
@@ -372,7 +334,7 @@ animation-discharging-framerate = 750
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
-warn-temperature = 60
+warn-temperature = 150
 
 format = <ramp> <label>
 format-underline = #f50a4d
@@ -381,41 +343,111 @@ format-warn-underline = ${self.format-underline}
 
 label = %temperature-c%
 label-warn = %temperature-c%
-label-warn-foreground = ${colors.secondary}
+; label-warn-foreground = ${colors.secondary}
+label-warn-foreground = #ffffff
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+; ramp-foreground = ${colors.foreground-alt}
+ramp-foreground = #ffffff
+
+[module/appmenu]
+; type = custom/menu
+
+; expand-right = true
+
+; format-spacing = 1
+
+; ; label-open = 
+; ; label-open-foreground = ${colors.secondary}
+; ; label-close =  cancel
+; ; label-close-foreground = ${colors.secondary}
+; ; label-separator = |
+; ; label-separator-foreground = ${colors.foreground-alt}
+
+; menu-0-0 = reboot
+; menu-0-0-exec = menu-open-1
+; menu-0-1 = power off
+; menu-0-1-exec = menu-open-2
+
+; menu-1-0 = cancel
+; menu-1-0-exec = menu-open-0
+; menu-1-1 = reboot
+; menu-1-1-exec = sudo reboot
+
+; menu-2-0 = power off
+; menu-2-0-exec = sudo poweroff
+; menu-2-1 = cancel
+; menu-2-1-exec = menu-open-0
+type = custom/menu
+
+menu-0-0 = Internet
+menu-0-0-exec = menu-open-1
+; menu-0-0-foreground = ${colors.primary}
+menu-0-1 = Multimedia
+menu-0-1-exec = menu-open-2
+menu-0-2 = Code
+menu-0-2-exec = menu-open-3
+
+menu-1-0 = 
+menu-1-0-exec = google-chrome-stable &
+menu-1-1 = Postman
+menu-1-1-exec = postman &
+menu-1-2 = Thunderbird
+menu-1-2-exec = ~/Programs/thunderbird/thunderbird &
+
+menu-2-0 = Draw.io
+menu-2-0-exec = draw.io &
+menu-2-1 = Ink
+menu-2-1-exec = inkscape &
+menu-2-2 = Volume Control
+menu-2-2-exec = pavucontrol &
+
+menu-3-0 = Visual Studio
+menu-3-0-exec = code &
+menu-3-1 = Sublime
+menu-3-1-exec = subl3 &
+menu-3-2 = Eclipse
+menu-3-2-exec = eclipse &
+
+
+label-open = 
+label-close = 
+label-separator = |
+label-separator-margin = 2
 
 [module/powermenu]
 type = custom/menu
 
-expand-right = true
-
-format-spacing = 1
-
-; label-open = 
-; label-open-foreground = ${colors.secondary}
-; label-close =  cancel
-; label-close-foreground = ${colors.secondary}
-; label-separator = |
-; label-separator-foreground = ${colors.foreground-alt}
-
-menu-0-0 = reboot
+menu-0-0 = 
 menu-0-0-exec = menu-open-1
-menu-0-1 = power off
+; menu-0-0-foreground = ${colors.primary}
+menu-0-1 = 
 menu-0-1-exec = menu-open-2
+menu-0-2 = 
+menu-0-2-exec = menu-open-3
+menu-0-3 = 
+menu-0-3-exec = menu-open-4
 
-menu-1-0 = cancel
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
+menu-1-0 = Power Off
+menu-1-0-exec = systemctl poweroff, mode "default"
 
-menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
-menu-2-1 = cancel
-menu-2-1-exec = menu-open-0
+menu-2-0 = Reboot
+menu-2-0-exec = systemctl reboot, mode "default"
+
+menu-3-0 = Suspend
+menu-3-0-exec = i3lock -c 000000 -n & systemctl suspend, mode "default"
+
+menu-4-0 = Log Out
+menu-4-0-exec = i3-msg exit, mode "default"
+
+label-open = 
+label-close = 
+label-separator = |
+label-separator-margin = 3
 
 [settings]
 screenchange-reload = true
