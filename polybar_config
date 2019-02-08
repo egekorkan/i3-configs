@@ -119,8 +119,6 @@ index-sort = true
 wrapping-scroll = true
 strip-wsnumbers = true
 
-
-
 ; Only show workspaces on the same output as the bar
 pin-workspaces = true
 
@@ -172,6 +170,7 @@ type = custom/script
 exec = ~/git/polybar-scripts/polybar-scripts/updates-arch-combined/updates-arch-combined.sh
 interval = 600
 format-underline = #1793d1
+click-left = yaourt -Syua
 ; label = 
 
 [module/filesystem]
@@ -223,7 +222,9 @@ type = custom/script
 exec = ~/git/i3blocks-contrib/key_layout/key_layout
 label-layout-underline = ${colors.secondary}
 interval = 5
-format-underline = #ced5e0
+format-underline = #ef9eef
+click-left = setxkbmap -model pc105 -layout us
+click-right = setxkbmap -model pc105 -layout us -variant intl
 
 [module/memory]
 type = internal/memory
@@ -407,6 +408,8 @@ menu-2-1 = Ink
 menu-2-1-exec = inkscape &
 menu-2-2 = Volume Control
 menu-2-2-exec = pavucontrol &
+menu-2-3 = Libre Office
+menu-2-3-exec = libreoffice &
 
 menu-3-0 = Visual Studio
 menu-3-0-exec = code &
