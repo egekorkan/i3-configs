@@ -29,11 +29,11 @@ exec --no-startup-id pasystray
 exec --no-startup-id sudo blueman-applet
 exec --no-startup-id xfce4-power-manager
 #exec --no-startup-id i3-msg 'workspace EMail; exec thunderbird'
-exec --no-startup-id i3-msg 'workspace EMail; exec ~/Programs/thunderbird/thunderbird'
-exec --no-startup-id i3-msg 'workspace Rambox; exec rambox'
+exec --no-startup-id i3-msg 'workspace 6:EMail; exec ~/Programs/thunderbird/thunderbird'
+exec --no-startup-id i3-msg 'workspace 5:Rambox; exec rambox'
 #exec --no-startup-id i3-msg 'workspace Trello; exec npm start --prefix ~/Programs/trello-desktop/'
-exec --no-startup-id i3-msg 'workspace Spotify; exec spotify'
-exec --no-startup-id lrz-syncshare
+exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify'
+exec --no-startup-id i3-msg 'workspace 7:Spotify; exec lrz-syncshare'
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.7
 exec_always --no-startup-id 2
