@@ -28,7 +28,6 @@ exec --no-startup-id nm-applet
 exec --no-startup-id pasystray
 exec --no-startup-id sudo blueman-applet
 exec --no-startup-id xfce4-power-manager
-#exec --no-startup-id i3-msg 'workspace EMail; exec thunderbird'
 exec --no-startup-id i3-msg 'workspace 6:EMail; exec ~/Programs/thunderbird/thunderbird'
 exec --no-startup-id i3-msg 'workspace 5:Rambox; exec rambox'
 #exec --no-startup-id i3-msg 'workspace Trello; exec npm start --prefix ~/Programs/trello-desktop/'
@@ -36,7 +35,6 @@ exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify'
 exec --no-startup-id i3-msg 'workspace 7:Spotify; exec lrz-syncshare'
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
 exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.7
-exec_always --no-startup-id 2
 exec --no-startup-id dropbox
 
 # node red for twitter automation
@@ -144,9 +142,9 @@ bindsym $mod+Ctrl+Down move workspace to output down
 bindsym $mod+Shift+q kill
 
 #lock screen: change the 00 00 00 according to R G B colors to change the color
-bindsym $mod+p exec xlock -mode blank
+bindsym $mod+p exec i3lock -c 000000 -n
 
-exec xautolock -time 30 -locker 'xlock -mode blank' &
+#exec xautolock -time 30 -locker 'xlock -mode blank' &
 
 #change keyboard configurations: 1 is normal, 2 is when you need accents for various languages
 bindsym $mod+Ctrl+1 exec setxkbmap -model pc105 -layout us
@@ -222,8 +220,20 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-#suspend bug fix hopefully
-bindsym $mod+z exec xrandr --auto
+# color defines for zenburn styled i3
+set $bg     #003459
+set $fg     #005672
+set $hi     #efef8f
+set $ac     #2073d8
+set $tx     #f2f2f2
+set $ia     #f1bf98
+set $rd     #cc2936
+
+# set some nice colors      border     background  text
+client.focused              $ac        $ac         $tx
+client.unfocused            $bg        $bg         $tx
+client.focused_inactive     $fg        $fg         $tx
+client.urgent               $rd        $rd         $tx
 
 #### WINDOW MANAGEMENT INISHED ####
 ###################################
