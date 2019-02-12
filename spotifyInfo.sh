@@ -5,4 +5,4 @@ titleInfo=$(spotify-now -i "%title")
 percentagePos=`expr index "$lightInfo" %`
 
 
-echo  ${artistInfo} "|" ${titleInfo}
+echo ${artistInfo} "|" ${titleInfo}
