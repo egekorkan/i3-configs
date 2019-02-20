@@ -30,10 +30,10 @@ alert = #bd2c40
 [bar/laptop]
 inherit = bar/bigscreen
 monitor = eDP-1
-bottom = true
 modules-left = powermenu i3
-
-; modules-left = bspwm i3
+modules-center = customspotify pulseaudio
+modules-right =  filesystem custombacklight customkeyboard memory cpu temperature system-fan-speed wlan updates-arch-aur battery popup-calendar
+tray-position = right
 
 [bar/bigscreen]
 ;monitor = ${env:MONITOR:HDMI-1}
@@ -71,9 +71,9 @@ font-5 = Font Awesome 5 Brands:pixelsize=14;0
 
 modules-left = i3 appmenu
 modules-center = customspotify pulseaudio
-modules-right =  filesystem custombacklight customkeyboard memory cpu wlan eth updates-arch-aur battery temperature popup-calendar
+modules-right =  filesystem customkeyboard memory cpu temperature system-fan-speed wlan eth updates-arch-aur popup-calendar
 
-tray-position = right
+tray-position = none
 tray-padding = 3
 tray-detached = false
 ;tray-background = #0063ff
@@ -170,8 +170,15 @@ type = custom/script
 exec = ~/git/polybar-scripts/polybar-scripts/updates-arch-combined/updates-arch-combined.sh
 interval = 600
 format-underline = #1793d1
-click-left = xfce4-terminal -e "yaourt -Syua"
-; label = 
+click-left = xfce4-terminal -e "yaourt -Syua &"
+format-prefix = 
+
+[module/system-fan-speed]
+type = custom/script
+exec = ~/git/polybar-scripts/polybar-scripts/system-fan-speed/system-fan-speed.sh
+format-underline = #0a81f5
+interval = 2
+format-prefix = " "
 
 [module/filesystem]
 type = internal/fs
@@ -194,7 +201,7 @@ interval = 1
 ; format-prefix = 
 format-prefix = %{A:gnome-system-monitor&:} %{A}
 format-prefix-foreground = #ffffff
-format-underline = #f90000
+format-underline = #f99700
 label = %percentage:2%%
 click-left = gnome-system-monitor
 
@@ -216,6 +223,7 @@ type = custom/script
 exec = ~/git/i3-configs/spotifyInfo.sh
 format-underline = #1db954
 format-prefix = %{A:dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous:} %{A} %{A:dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause:} %{A} %{A:dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next:} %{A}
+exec-if = pgrep -x spotify
 
 [module/customkeyboard]
 type = custom/script
@@ -223,13 +231,14 @@ exec = ~/git/i3blocks-contrib/key_layout/key_layout
 label-layout-underline = ${colors.secondary}
 interval = 5
 format-underline = #ef9eef
+format-prefix = " "
 click-left = setxkbmap -model pc105 -layout us
 click-right = setxkbmap -model pc105 -layout us -variant intl
 
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = 
+format-prefix = " "
 format-prefix-foreground = #ffffff
 format-underline = #4bffdc
 label = %percentage_used%%
@@ -260,9 +269,9 @@ label-connected =  %local_ip% | %downspeed:7%
 
 ; format-disconnected = 
 format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
+format-disconnected-underline = #ff5555
+label-disconnected = disconnected
+label-disconnected-foreground = ${colors.foreground-alt}
 
 [module/popup-calendar]
 type = custom/script
@@ -270,7 +279,7 @@ exec = ~/git/polybar-scripts/polybar-scripts/popup-calendar/popup-calendar.sh
 interval = 5
 click-left = ~/git/polybar-scripts/polybar-scripts/popup-calendar/popup-calendar.sh --popup
 format-underline = #b3cbef
-
+format-prefix = " "
 [module/pulseaudio]
 type = internal/pulseaudio
 
@@ -282,14 +291,14 @@ label-muted = 
 label-muted-foreground = #666
 
 bar-volume-width = 10
-bar-volume-foreground-0 = #555
+bar-volume-foreground-0 = #419141
 bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #f5a70a
-bar-volume-foreground-3 = #ff5555
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #f5a70a
 bar-volume-foreground-4 = #ff5555
 bar-volume-foreground-5 = #ff5555
 bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
+bar-volume-gradient = true
 bar-volume-indicator = |
 bar-volume-indicator-font = 4
 bar-volume-fill = ─
@@ -304,26 +313,25 @@ battery = BAT0
 adapter = AC
 full-at = 97
 
-click-left = xfce4-power-manager-settings
-
 format-charging = <label-charging>
 format-charging-underline = #ffb52a
-label-charging =  %percentage%%
+label-charging = %{A:xfce4-power-manager-settings&:} %{A} %percentage%%
 
 label-discharging = %percentage%% %time% %consumption%
 format-discharging = <ramp-capacity> <label-discharging>
+
 
 format-discharging-underline = ${self.format-charging-underline}
 format-full-prefix = %{A:xfce4-power-manager-settings&:} %{A}
 format-full-prefix-foreground = #ffffff
 format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-ramp-capacity-foreground = ${colors.foreground-alt}
+ramp-capacity-0 = %{A:xfce4-power-manager-settings&:} %{A}
+ramp-capacity-1 = %{A:xfce4-power-manager-settings&:} %{A}
+ramp-capacity-2 = %{A:xfce4-power-manager-settings&:} %{A}
+ramp-capacity-3 = %{A:xfce4-power-manager-settings&:} %{A}
+ramp-capacity-4 = %{A:xfce4-power-manager-settings&:} %{A}
+ramp-capacity-foreground = #ffffff
 
 [module/temperature]
 type = internal/temperature
@@ -437,6 +445,6 @@ screenchange-reload = true
 
 [global/wm]
 margin-top = 50
-margin-bottom = 5
+margin-bottom = 50
 
 ; vim:ft=dosini

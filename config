@@ -189,7 +189,7 @@ bindsym $mod+Shift+space floating toggle
 #bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+#bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -220,7 +220,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# color defines for zenburn styled i3
+# colors
 set $bg     #003459
 set $fg     #005672
 set $hi     #efef8f
@@ -248,22 +248,26 @@ bindsym $mod+e exec nemo # file browser
 bindsym $mod+g exec gsimplecal # floating calendar
 bindsym $mod+q exec gnome-calculator # floating calculator
 for_window [class="Gnome-calculator"] floating enable; 
-bindsym $mod+s exec subl3
+bindsym $mod+s exec subl3 #editor
 bindsym $mod+l exec libreoffice
+bindsym $mod+a exec evince #pdf reader
+bindsym $mod+z exec code #IDE
 bindsym $mod+Shift+d exec npm start --prefix ~/Programs/drawio-desktop/
 bindsym $mod+Ctrl+Delete exec gnome-system-monitor
 
 # start a terminal
 bindsym $mod+Return exec xfce4-terminal -e fish
+
+# start Ranger
 bindsym $mod+Shift+Return exec xfce4-terminal -e ranger
 
-#taking screenshot of a selection and copying it to clipboard 
+#Taking screenshot of a selection and copying it to clipboard 
 bindsym Print exec maim -so | xclip -selection clipboard -t image/png
+#Taking a screenshot and saving it to ~ with name screenshot.png
 bindsym $mod+BackSpace exec maim -so screenshot.png
-#bindsym Print exec shutter -s -o screenshot.png
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show run #dmenu_run
 for_window [class="Yad"] floating enable
 
 #bindsym $mod+Shift+w exec feh -xN screenshot.png
