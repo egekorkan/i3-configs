@@ -34,9 +34,25 @@ modules-left = powermenu i3
 modules-center = customspotify pulseaudio
 modules-right =  filesystem custombacklight customkeyboard memory cpu temperature system-fan-speed wlan updates-arch-aur battery popup-calendar
 tray-position = right
+fixed-center = true
+
+[bar/leftverticaldown]
+inherit = bar/bigscreen
+bottom = true
+monitor = DP-1-1
+width = 100%
+height = 2%
+; offset-x = 10%
+; offset-y = 10%
+radius = 2.0
+fixed-center = true
+
+modules-left = i3 appmenu
+modules-center = customspotify pulseaudio
+modules-right = customkeyboard cpu temperature popup-calendar
+
 
 [bar/bigscreen]
-;monitor = ${env:MONITOR:HDMI-1}
 bottom = true
 monitor = DP-1-2
 ; monitor-fallback =eDP-1

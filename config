@@ -11,7 +11,8 @@ exec --no-startup-id xbindkeys
 execshu --no-startup-id nemo-preview
 
 #default desktop
-exec --no-startup-id ~/git/i3-configs/justlaptop.sh
+exec --no-startup-id "sleep 10; exec bash ~/git/i3-configs/detectScreens.sh"
+
 
 #scaling of the i3 bars above the windows
 exec_always  --no-startup-id xrandr --dpi 120
@@ -29,7 +30,7 @@ exec --no-startup-id pasystray
 exec --no-startup-id sudo blueman-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id i3-msg 'workspace 6:EMail; exec ~/Programs/thunderbird/thunderbird'
-exec --no-startup-id i3-msg 'workspace 5:Rambox; exec rambox'
+exec --no-startup-id i3-msg exec "sleep 10; workspace 5:Rambox; exec rambox"
 #exec --no-startup-id i3-msg 'workspace Trello; exec npm start --prefix ~/Programs/trello-desktop/'
 exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify'
 exec --no-startup-id i3-msg 'workspace 7:Spotify; exec lrz-syncshare'
@@ -302,7 +303,7 @@ bindsym $mod+Ctrl+s exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature_DE-Simpl
 ##########################################
 
 #set display mode
-set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2]"
+set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2] workThreeScreens[3]"
 bindsym $mod+x mode $displayMode
 mode $displayMode {
     bindsym l exec "\
@@ -310,11 +311,15 @@ mode $displayMode {
         mode "default"
     
     bindsym 1 exec "\
-        ~/git/i3-configs/work-justDP1-2.sh"; \
+        ~/git/i3-configs/work-wide.sh"; \
         mode "default"
 
     bindsym 2 exec "\
-        ~/git/i3-configs/work-displays.sh"; \
+        ~/git/i3-configs/work-displays-2.sh"; \
+        mode "default"
+
+    bindsym 3 exec "\
+        ~/git/i3-configs/work-displays-3.sh"; \
         mode "default"
 
     bindsym Return mode "default"
@@ -371,6 +376,7 @@ bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
+# Launching polybar
 exec_always --no-startup-id ~/git/i3-configs/launch.sh
 ##########################################
 # I3BAR CONTROLS
