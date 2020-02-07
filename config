@@ -3,16 +3,19 @@
 # STARTUP CONTROL
 ##########################################
 #Network Manager
-exec --no-startup-id "sleep 10; sudo NetworkManager"
+exec --no-startup-id "sleep 3; sudo NetworkManager"
 
 #Xbindkeys init
 exec --no-startup-id xbindkeys
 
-execshu --no-startup-id nemo-preview
+#execshu --no-startup-id nemo-preview
+exec --no-startup-id thunar --daemon
 
 #default desktop
 exec --no-startup-id "sleep 10; exec bash ~/git/i3-configs/detectScreens.sh"
 
+# signaling that you are here!
+exec_always --no-startup-id "~/git/i3-configs/office.sh here"
 
 #scaling of the i3 bars above the windows
 exec_always  --no-startup-id xrandr --dpi 120
@@ -24,12 +27,16 @@ exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
 #wallpaper
 exec_always --no-startup-id feh -z --bg-fill  ~/Pictures/Wallpapers/*
 
+#gnome keyring
+exec_always --no-startup-id gnome-keyring-daemon --start
+
 #START UP APPLICATIONS
 exec --no-startup-id nm-applet
 exec --no-startup-id pasystray
 exec --no-startup-id sudo blueman-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id i3-msg 'workspace 6:EMail; exec ~/Programs/thunderbird/thunderbird'
+#exec --no-startup-id i3-msg 'workspace 6:EMail; exec evolution'
 exec --no-startup-id i3-msg exec "sleep 10; workspace 5:Rambox; exec rambox"
 #exec --no-startup-id i3-msg 'workspace Trello; exec npm start --prefix ~/Programs/trello-desktop/'
 exec --no-startup-id i3-msg 'workspace 7:Spotify; exec spotify'
@@ -39,7 +46,7 @@ exec_always --no-startup-id sudo xinput set-prop 'SynPS/2 Synaptics TouchPad' 'l
 exec --no-startup-id dropbox
 
 # node red for twitter automation
-exec --no-startup-id node-red
+# exec --no-startup-id node-red
 
 # Autolock thingy
 #exec xautolock -time 10 -locker 'i3lock -c 000000 -n' &
@@ -47,9 +54,9 @@ exec --no-startup-id node-red
 
 
 ##Startup Settings for Audio levels
-exec --no-startup-id pactl -- set-sink-volume 0 15%
-exec --no-startup-id pactl -- set-sink-volume 1 15%
-exec --no-startup-id pactl -- set-sink-volume 2 15%
+exec --no-startup-id pactl -- set-sink-volume 0 50%
+exec --no-startup-id pactl -- set-sink-volume 1 50%
+exec --no-startup-id pactl -- set-sink-volume 2 50%
 
 set $ws1 "1:Internet"
 set $ws2 "2:Code"
@@ -143,7 +150,11 @@ bindsym $mod+Ctrl+Down move workspace to output down
 bindsym $mod+Shift+q kill
 
 #lock screen: change the 00 00 00 according to R G B colors to change the color
-bindsym $mod+p exec i3lock -c 000000 -n
+#bindsym $mod+p exec i3lock -c 000000 -n
+# following is for the Rpi of the office
+bindsym $mod+p exec --no-startup-id "~/git/i3-configs/office.sh home; sleep 0.2; i3lock -c 000000 -n; ~/git/i3-configs/office.sh here"; mode "default";
+
+# bindsym $mod+p exec mosquitto_pub -t "messageDisplay" -m "Ege left the office" -h "10.162.253.245" && i3lock -c 000000 -n && mosquitto_pub -t "messageDisplay" -m "Ege is back!" -h "10.162.253.245"
 
 #exec xautolock -time 30 -locker 'xlock -mode blank' &
 
@@ -180,7 +191,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 #bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+#bindsym $mod+w layout tabbed
 bindsym $mod+t layout toggle split
 
 # toggle tiling / floating
@@ -245,7 +256,7 @@ client.urgent               $rd        $rd         $tx
 
 #PROGRAM BINDS
 bindsym $mod+c exec firefox # browser
-bindsym $mod+e exec nemo # file browser 
+bindsym $mod+e exec thunar # file browser 
 bindsym $mod+g exec gsimplecal # floating calendar
 bindsym $mod+q exec gnome-calculator # floating calculator
 for_window [class="Gnome-calculator"] floating enable; 
@@ -269,6 +280,7 @@ bindsym $mod+BackSpace exec maim -so screenshot.png
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec rofi -show run #dmenu_run
+
 for_window [class="Yad"] floating enable
 
 #bindsym $mod+Shift+w exec feh -xN screenshot.png
@@ -303,7 +315,7 @@ bindsym $mod+Ctrl+s exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature_DE-Simpl
 ##########################################
 
 #set display mode
-set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2] workThreeScreens[3]"
+set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2], mirror [m]"
 bindsym $mod+x mode $displayMode
 mode $displayMode {
     bindsym l exec "\
@@ -318,8 +330,8 @@ mode $displayMode {
         ~/git/i3-configs/work-displays-2.sh"; \
         mode "default"
 
-    bindsym 3 exec "\
-        ~/git/i3-configs/work-displays-3.sh"; \
+    bindsym m exec "\
+        ~/git/i3-configs/mirrorScreen.sh"; \
         mode "default"
 
     bindsym Return mode "default"
@@ -357,8 +369,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume @DEFA
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute sound
 #move the sink input
-bindsym $mod+XF86AudioRaiseVolume exec pacmd move-sink-input 1 1 & ~/git/i3-configs/findActiveSink.sh
-bindsym $mod+XF86AudioLowerVolume exec pacmd move-sink-input 1 0 & ~/git/i3-configs/findActiveSink.sh
+#bindsym $mod+XF86AudioRaiseVolume exec pacmd move-sink-input 1 1 & ~/git/i3-configs/findActiveSink.sh
+#bindsym $mod+XF86AudioLowerVolume exec pacmd move-sink-input 1 0 & ~/git/i3-configs/findActiveSink.sh
 
 ##########SPOTIFY CONTROL##########
 

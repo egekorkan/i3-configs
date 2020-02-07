@@ -31,7 +31,7 @@ if [[ $edp1 = true ]] && [[ $dp11 = true ]] && [[ $dp12 = true ]]
 then
 	echo "all three!"
 	source ~/git/i3-configs/work-displays-3.sh
-elif [[ $edp1 = true ]] && [[ $dp11 = true ]] && [[ $dp12 = false ]] 
+elif [[ $edp1 = true ]] && [[ $dp12 = true ]] && [[ $dp11 = false ]] 
 then
 	echo "main and wide"
 	source ~/git/i3-configs/work-displays-2.sh
