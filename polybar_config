@@ -33,8 +33,8 @@ monitor = eDP-1
 modules-left = powermenu i3
 modules-center = customspotify pulseaudio
 modules-right =  filesystem custombacklight customkeyboard cpu temperature system-fan-speed wlan updates-arch-aur battery popup-calendar
-tray-position = right
 fixed-center = true
+tray-position = right
 
 [bar/leftverticaldown]
 inherit = bar/bigscreen
@@ -51,6 +51,23 @@ modules-left = i3 appmenu
 modules-center = pulseaudio
 modules-right = customkeyboard cpu temperature popup-calendar
 
+[bar/hdmi]
+inherit = bar/laptop
+monitor = HDMI-1
+bottom=true
+width = 100%
+height = 3%
+; offset-x = 10%
+; offset-y = 10%
+radius = 2.0
+fixed-center = true
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+modules-left = i3 appmenu
+modules-center = customspotify pulseaudio
+modules-right = customkeyboard cpu temperature popup-calendar
+
 
 [bar/bigscreen]
 bottom = true
@@ -62,6 +79,7 @@ height = 2%
 ; offset-y = 10%
 radius = 2.0
 fixed-center = true
+#tray-position = right
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -89,7 +107,7 @@ modules-left = i3 appmenu
 modules-center = customspotify pulseaudio
 modules-right =  filesystem customkeyboard memory cpu temperature system-fan-speed wlan eth updates-arch-aur popup-calendar
 
-tray-position = none
+;tray-position = none
 tray-padding = 6
 tray-detached = false
 tray-scale = 1.0

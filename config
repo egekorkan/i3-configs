@@ -30,6 +30,9 @@ exec_always --no-startup-id feh -z --bg-fill  ~/Pictures/Wallpapers/*
 #gnome keyring
 exec_always --no-startup-id gnome-keyring-daemon --start
 
+# redshift with traybar icon
+exec --no-startup-id redshift-gtk
+
 #START UP APPLICATIONS
 exec --no-startup-id nm-applet
 exec --no-startup-id pasystray
@@ -145,6 +148,9 @@ bindsym $mod+Ctrl+Down move workspace to output down
 ##########################################
 # WINDOW MANAGEMENT
 ##########################################
+
+# Float MS Teams Notifications
+for_window [title="Microsoft Teams Notification"] floating enable
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -280,6 +286,8 @@ bindsym $mod+BackSpace exec maim -so screenshot.png
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec rofi -show run #dmenu_run
+bindsym $mod+Tab exec rofi -show window
+#bindsym $mod+d exec ulauncher
 
 for_window [class="Yad"] floating enable
 
@@ -315,7 +323,7 @@ bindsym $mod+Ctrl+s exec xclip -i ./LRZ\ Sync+Share/Work/EmailSignature_DE-Simpl
 ##########################################
 
 #set display mode
-set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2], mirror [m]"
+set $displayMode "Set display mode workOneScreen[1], laptopOnly[l], workTwoScreens[2], workThreeScreens[3], hdmi up [4], mirror [m]"
 bindsym $mod+x mode $displayMode
 mode $displayMode {
     bindsym l exec "\
@@ -328,6 +336,14 @@ mode $displayMode {
 
     bindsym 2 exec "\
         ~/git/i3-configs/work-displays-2.sh"; \
+        mode "default"
+
+    bindsym 3 exec "\
+        ~/git/i3-configs/work-3.sh"; \
+        mode "default"
+
+    bindsym 4 exec "\
+        ~/git/i3-configs/hdmi.sh"; \
         mode "default"
 
     bindsym m exec "\
